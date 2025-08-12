@@ -55,4 +55,55 @@ Express.js é um framework de node que facilita a criação de servidores em apl
 3. Flexibilidade de Roteamento:  Express fornece um sistema de roteamento poderoso e flexível, que permite associar URLs específicas a funções de tratamento. É possível definir rotas para diferentes métodos HTTP (como GET, POST, PUT e DELETE) e para URLs dinâmicas que aceitam parâmetros.
 4. Não opinativo: permite que você organize as pastas da forma que você preferir, sem ter uma estrutura rígida
 
+### Middleware
+Middleware são funções que interceptam uma requisição ou uma resposta podendo realizar operações com a mesma. Os middlewares são as principais funções do express.js, podendo adicionar várias camádas de lógica as requisções/respostas. Exemplo:
+```
+// Middleware para verificar autenticação
+const checkAuth = (req, res, next) => {
+        const autenticado = true; // Altere para `false` para simular um usuário não autenticado
+      
+      
+        if (autenticado) {
+          next(); // Usuário autenticado, continua para o próximo middleware ou rota
+        } else {
+          res.status(401).send("Acesso negado"); // Usuário não autenticado, responde com erro 401
+        }
+};
+```
+A função next() do middleware redereciona para um outro middleware ou para o manipulador da rota. Os middlewares sempre acontecem antes do manipulador, exemplo:
+```
+// Rota com middleware específico
+app.get("/dashboard", checkAuth, (req, res) => {
+        res.send("Bem-vindo ao painel");
+});
+```
+__Tipos de Middlewares__
+1.	Middleware de Aplicação: Aplica-se globalmente a todas as rotas da aplicação.
+```
+// Middleware de log para todas as requisições
+app.use((req, res, next) => {
+      console.log(`${req.method} - ${req.url}`);
+      next(); // Passa para o próximo middleware ou rota
+});
+```
+2.	Middleware de Rota: Aplica-se a rotas específicas.
+```
+// Middleware para verificar acesso ao perfil
+const checkAccess = (req, res, next) => {
+        const authorized = true; // Altere para `false` para simular um usuário não autorizado
+        if (authorized) {
+          next(); // Usuário autorizado, passa para o próximo manipulador
+        } else {
+          res.status(403).json({ message: "Acesso ao perfil negado" }); // Resposta em JSON para não autorizado
+        }
+};
+
+// Rota /perfil com middleware específico
+app.get("/perfil", checkAccess, (req, res) => {
+        res.json({ message: "Bem-vindo ao seu perfil!" }); // Resposta em JSON para autorizado
+});
+      
+```
+3.	Middleware Incorporado e de Terceiros: São middlewares que vêm com o Express ou de bibliotecas externas, como express.json() para processar JSON.
+
           
