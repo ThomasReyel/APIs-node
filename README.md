@@ -146,4 +146,11 @@ Então se o cliente enviar uma requisição dessa forma: http://localhost:3000/p
     }
 }
 ```
+## Manipulação e Banco de Dados
+
+A manipulação de dados no servidor refere-se à capacidade de um servidor de processar, transformar, armazenar e enviar dados em resposta às solicitações dos clientes. Por conta de sua característica assíncrona e orientada a eventos, o node é muito eficiente em manipular grandes volumes de dados
+
+### JSON como padrão de troca de dados
+
+
 
