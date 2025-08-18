@@ -11,6 +11,27 @@ const app = express();
     
 // Define a porta em que o servidor irá rodar
 const PORT = 3000;
+
+// Middleware para verificar autenticação
+const checkAuth = (req, res, next) => {
+      const autenticado = false; // Altere para `false` para simular um usuário não autenticado
+      if (autenticado) {
+        next(); // Usuário autenticado, continua para o próximo middleware ou rota
+      } else {
+        res.status(401).json({ message: "Acesso negado" }); // Usuário não autenticado, responde com erro 401 em JSON
+      }
+};
+
+// Rota com middleware específico
+app.get("/dashboard", checkAuth, (req, res) => {
+      res.json({ message: "Bem-vindo ao painel" }); // Responde com JSON
+});
+
+// Inicia o servidor e faz com que ele escute na porta definida
+app.listen(PORT, () => {
+      console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
+    
 // Rota GET para listar todos os produtos
 app.get("/produtos", (req, res) => {
       res.json({ message: "Listando todos os produtos", produtos: ["arroz", 'feijão'] }); // Exemplo com um array vazio de produtos
