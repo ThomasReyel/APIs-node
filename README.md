@@ -105,5 +105,45 @@ app.get("/perfil", checkAccess, (req, res) => {
       
 ```
 3.	Middleware Incorporado e de Terceiros: São middlewares que vêm com o Express ou de bibliotecas externas, como express.json() para processar JSON.
+### Parâmetros
+Os parâmetros de rota fazem parte da URL e são definidos com o uso de : seguido do nome do parâmetro. Eles são usados quando queremos capturar partes da URL para processar no servidor, como o ID de um recurso. Exemplo:
+```
+// Rota com parâmetro de rota :id
+app.get("/usuarios/:id", (req, res) => {
+      const { id } = req.params; // Extrai o parâmetro 'id' da URL
+      res.json({ message: `Buscando o usuário com ID: ${id}` });
+});
+```
+Se o cliente fizer uma requisição para http://localhost:3000/usuarios/123, a resposta será:
+```
+{
+  "message": "Buscando o usuário com ID: 123"
+}
+```
+### Query Strings
+Query Strings são um conjunto de palavras chaves que vão na URL (logo após o "?"). Elas são utilizadas para enviar dados adicionais, geralmente para filtrar um conjunto de informações
+```
+app.get("/produtos", (req, res) => {
+const { categoria, precoMaximo } = req.query; // Extrai os valores da query string
 
-          
+res.json({
+      message: "Listando produtos",
+      filtros: {
+        categoria: categoria || "Todas",
+        precoMaximo: precoMaximo || "Sem limite"
+      }
+    });
+});
+  
+```
+Então se o cliente enviar uma requisição dessa forma: http://localhost:3000/produtos?categoria=eletronicos&precoMaximo=1000, a resposta será: 
+```
+{
+    "message": "Listando produtos",
+    "filtros": {
+      "categoria": "eletronicos",
+      "precoMaximo": "1000"
+    }
+}
+```
+
