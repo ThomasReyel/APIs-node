@@ -151,6 +151,26 @@ Então se o cliente enviar uma requisição dessa forma: http://localhost:3000/p
 A manipulação de dados no servidor refere-se à capacidade de um servidor de processar, transformar, armazenar e enviar dados em resposta às solicitações dos clientes. Por conta de sua característica assíncrona e orientada a eventos, o node é muito eficiente em manipular grandes volumes de dados
 
 ### JSON como padrão de troca de dados
+JSON (JavaScript Object Notation) é um formato de troca de dados, leve, de fácil compreensão e escrita. Graças a essas característcas, e ao fato de ser de alta compatibilidade com JavaScript, JSON se tornou-se padrão quando se trata de troca de dados no contexto WEB. Em Node.js a manipulação de dados com JSON é uma tarefa comum, o que facilita isso é a facilidade que o node possui para converter objetos JavaScript para JSONs. Exemplo:
+```
+const dados = {
+    nome: "Maria",
+    idade: 30,
+    profissao: "Engenheira"
+};
+  
+// Converter objeto JavaScript para JSON
+const jsonString = JSON.stringify(dados);
+console.log('String JSON:', jsonString);
+  
+// Converter string JSON para objeto JavaScript
+const jsonObject = JSON.parse(jsonString);
+console.log('Objeto JavaScript:', jsonObject);
+```
+### Integração com Bancos de Dados Relacionais (SQL)
+_1. MySQL_
+MySQL é um banco de dados relacional de condigo aberto e extremamente popular que é muito utilizada em aplicações de médio e grande porte, ele utiliza a linguagem SQL (Structured Query Language – Linguagem de Consulta Estruturada), que é a linguagem mais popular para inserção, consulta e manipulação de dados em um banco.
+
 
 
 
