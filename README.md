@@ -105,5 +105,122 @@ app.get("/perfil", checkAccess, (req, res) => {
       
 ```
 3.	Middleware Incorporado e de Terceiros: São middlewares que vêm com o Express ou de bibliotecas externas, como express.json() para processar JSON.
+### Parâmetros
+Os parâmetros de rota fazem parte da URL e são definidos com o uso de : seguido do nome do parâmetro. Eles são usados quando queremos capturar partes da URL para processar no servidor, como o ID de um recurso. Exemplo:
+```
+// Rota com parâmetro de rota :id
+app.get("/usuarios/:id", (req, res) => {
+      const { id } = req.params; // Extrai o parâmetro 'id' da URL
+      res.json({ message: `Buscando o usuário com ID: ${id}` });
+});
+```
+Se o cliente fizer uma requisição para http://localhost:3000/usuarios/123, a resposta será:
+```
+{
+  "message": "Buscando o usuário com ID: 123"
+}
+```
+### Query Strings
+Query Strings são um conjunto de palavras chaves que vão na URL (logo após o "?"). Elas são utilizadas para enviar dados adicionais, geralmente para filtrar um conjunto de informações
+```
+app.get("/produtos", (req, res) => {
+const { categoria, precoMaximo } = req.query; // Extrai os valores da query string
 
-          
+res.json({
+      message: "Listando produtos",
+      filtros: {
+        categoria: categoria || "Todas",
+        precoMaximo: precoMaximo || "Sem limite"
+      }
+    });
+});
+  
+```
+Então se o cliente enviar uma requisição dessa forma: http://localhost:3000/produtos?categoria=eletronicos&precoMaximo=1000, a resposta será: 
+```
+{
+    "message": "Listando produtos",
+    "filtros": {
+      "categoria": "eletronicos",
+      "precoMaximo": "1000"
+    }
+}
+```
+## Manipulação e Banco de Dados
+
+A manipulação de dados no servidor refere-se à capacidade de um servidor de processar, transformar, armazenar e enviar dados em resposta às solicitações dos clientes. Por conta de sua característica assíncrona e orientada a eventos, o node é muito eficiente em manipular grandes volumes de dados
+
+### JSON como padrão de troca de dados
+JSON (JavaScript Object Notation) é um formato de troca de dados, leve, de fácil compreensão e escrita. Graças a essas característcas, e ao fato de ser de alta compatibilidade com JavaScript, JSON se tornou-se padrão quando se trata de troca de dados no contexto WEB. Em Node.js a manipulação de dados com JSON é uma tarefa comum, o que facilita isso é a facilidade que o node possui para converter objetos JavaScript para JSONs. Exemplo:
+```
+const dados = {
+    nome: "Maria",
+    idade: 30,
+    profissao: "Engenheira"
+};
+  
+// Converter objeto JavaScript para JSON
+const jsonString = JSON.stringify(dados);
+console.log('String JSON:', jsonString);
+  
+// Converter string JSON para objeto JavaScript
+const jsonObject = JSON.parse(jsonString);
+console.log('Objeto JavaScript:', jsonObject);
+```
+## Integração com Bancos de Dados Relacionais (SQL)
+_MySQL_
+MySQL é um banco de dados relacional de condigo aberto e extremamente popular que é muito utilizada em aplicações de médio e grande porte, ele utiliza a linguagem SQL (Structured Query Language – Linguagem de Consulta Estruturada), que é a linguagem mais popular para inserção, consulta e manipulação de dados em um banco.
+```
+const mysql = require("mysql2");
+
+const connection = mysql.createConnection({
+        host: "localhost",
+        user: "usuário",
+        password: "senha",
+        database: "exemplo_db",
+      });
+      
+      connection.connect((err) => {
+        if (err) {
+          console.error("Erro ao conectar ao banco de dados:", err);
+          return;
+        }
+        console.log("Conectado ao banco de dados MySQL com sucesso!");
+});
+      
+module.exports = connection;
+```
+Exemplo de conexão em MySQL.
+
+_MongoDG (NoSQL)_
+MongoDB é um banco de dados NoSQL orientado a docuemntos. Ao contrário do MySQL, o Mongo não guarda as inforamações em linhas de uma tabela, e sim em JSONs, o que garante uma maior flexibilidade e eficiência na movimentação desses dados, sendo muito útil para sistemas que necessitem de uma alta performance.
+
+### BD NoSQL
+NoSQL é uma sigla para (not only SQL), esse tipo de banco de dados foi criado para permitir a criação de maneiras mais flexíveis em relação a estrutura relacional. Ele possui algumas diferenças com bancos SQL padrões (como o mySQL),
+1. _Document-oriented:_ Cada registro é armazenado como um documento JSON, permitindo que os documentos em uma coleção tenham diferentes estruturas.
+2. _Schema-less:_ A estrutura dos documentos não é rigidamente definida, permitindo mais flexibilidade.
+3. _Alta escalabilidade:_ Suporta particionamento horizontal (sharding) para distribuir dados em vários servidores.
+
+_ Propriedade BASE _
+Transação em banco de dados relacionais, geralmente segue o modelo ACID (Atomicidade, Consistência, Isolamento e Durabilidade), garantindo segurança em confiabilidade, porém ao custo de desempenho. Os NoSQL, por outro lado, utilizam o sistema BASE (Basic Availability, Soft-state, Eventual consistency)
+1. _Basic Availability:_  O banco de dados está disponível na maior parte do tempo.
+2. _Soft-state:_ O estado dos dados pode mudar sem uma gravação explícita.
+3. _Eventual consistency:_ Os dados serão consistentes em algum momento, mesmo que não imediatamente.
+
+_ Quando é utilizado? _
+Os noSQL são usados geralmente quando se o sistema possui um grande volume de dados, mas necessita de velocidade de busca e resposta. Quanto maior a quantidade de dados em uma banco relaciona padrão, maior é o tempo de resposta, por isso empresas em grande porte frequentemente adotam essa abordagem.
+
+| Banco de Dados Relacional (MySQL)   | Banco de Dados NoSQL (MongoDB)  | Descrição  |
+| ------------- | ------------- | ------------- | 
+| Tabela | Coleção | Conjunto de registros/dados. Em NoSQL, uma coleção armazena documentos JSON/BSON. | 
+| Linha | Documento | Um único registro dentro de uma tabela/coleção. Em MongoDB, cada documento pode ter uma estrutura diferente. | 
+| Coluna | Campo | Representa um atributo/valor de um registro. Em MongoDB, os campos podem variar de documento para documento. |
+| Chave Primária | _id | Identificador único de um registro/documento. Em MongoDB, o campo _id é gerado automaticamente. | 
+| Banco de Dados | Banco de Dados | Agrupamento de tabelas em SQL e de coleções em MongoDB. | 
+
+
+
+
+
+
+
