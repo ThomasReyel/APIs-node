@@ -201,16 +201,16 @@ NoSQL é uma sigla para (not only SQL), esse tipo de banco de dados foi criado p
 2. _Schema-less:_ A estrutura dos documentos não é rigidamente definida, permitindo mais flexibilidade.
 3. _Alta escalabilidade:_ Suporta particionamento horizontal (sharding) para distribuir dados em vários servidores.
 
-_ Propriedade BASE _
+- Propriedade BASE
 Transação em banco de dados relacionais, geralmente segue o modelo ACID (Atomicidade, Consistência, Isolamento e Durabilidade), garantindo segurança em confiabilidade, porém ao custo de desempenho. Os NoSQL, por outro lado, utilizam o sistema BASE (Basic Availability, Soft-state, Eventual consistency)
 1. _Basic Availability:_  O banco de dados está disponível na maior parte do tempo.
 2. _Soft-state:_ O estado dos dados pode mudar sem uma gravação explícita.
 3. _Eventual consistency:_ Os dados serão consistentes em algum momento, mesmo que não imediatamente.
 
-_ Quando é utilizado? _
+- Quando é utilizado?
 Os noSQL são usados geralmente quando se o sistema possui um grande volume de dados, mas necessita de velocidade de busca e resposta. Quanto maior a quantidade de dados em uma banco relaciona padrão, maior é o tempo de resposta, por isso empresas em grande porte frequentemente adotam essa abordagem.
 
-| Banco de Dados Relacional (MySQL)   | Banco de Dados NoSQL (MongoDB)  | Descrição  |
+| Banco de Dados Relacional (MySQL) | Banco de Dados NoSQL (MongoDB) | Descrição |
 | ------------- | ------------- | ------------- | 
 | Tabela | Coleção | Conjunto de registros/dados. Em NoSQL, uma coleção armazena documentos JSON/BSON. | 
 | Linha | Documento | Um único registro dentro de uma tabela/coleção. Em MongoDB, cada documento pode ter uma estrutura diferente. | 
