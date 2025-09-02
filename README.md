@@ -167,9 +167,59 @@ console.log('String JSON:', jsonString);
 const jsonObject = JSON.parse(jsonString);
 console.log('Objeto JavaScript:', jsonObject);
 ```
-### Integração com Bancos de Dados Relacionais (SQL)
-_1. MySQL_
+## Integração com Bancos de Dados Relacionais (SQL)
+_MySQL_
 MySQL é um banco de dados relacional de condigo aberto e extremamente popular que é muito utilizada em aplicações de médio e grande porte, ele utiliza a linguagem SQL (Structured Query Language – Linguagem de Consulta Estruturada), que é a linguagem mais popular para inserção, consulta e manipulação de dados em um banco.
+```
+const mysql = require("mysql2");
+
+const connection = mysql.createConnection({
+        host: "localhost",
+        user: "usuário",
+        password: "senha",
+        database: "exemplo_db",
+      });
+      
+      connection.connect((err) => {
+        if (err) {
+          console.error("Erro ao conectar ao banco de dados:", err);
+          return;
+        }
+        console.log("Conectado ao banco de dados MySQL com sucesso!");
+});
+      
+module.exports = connection;
+```
+Exemplo de conexão em MySQL.
+
+_MongoDG (NoSQL)_
+MongoDB é um banco de dados NoSQL orientado a docuemntos. Ao contrário do MySQL, o Mongo não guarda as inforamações em linhas de uma tabela, e sim em JSONs, o que garante uma maior flexibilidade e eficiência na movimentação desses dados, sendo muito útil para sistemas que necessitem de uma alta performance.
+
+### BD NoSQL
+NoSQL é uma sigla para (not only SQL), esse tipo de banco de dados foi criado para permitir a criação de maneiras mais flexíveis em relação a estrutura relacional. Ele possui algumas diferenças com bancos SQL padrões (como o mySQL),
+1. _Document-oriented:_ Cada registro é armazenado como um documento JSON, permitindo que os documentos em uma coleção tenham diferentes estruturas.
+2. _Schema-less:_ A estrutura dos documentos não é rigidamente definida, permitindo mais flexibilidade.
+3. _Alta escalabilidade:_ Suporta particionamento horizontal (sharding) para distribuir dados em vários servidores.
+
+_ Propriedade BASE _
+Transação em banco de dados relacionais, geralmente segue o modelo ACID (Atomicidade, Consistência, Isolamento e Durabilidade), garantindo segurança em confiabilidade, porém ao custo de desempenho. Os NoSQL, por outro lado, utilizam o sistema BASE (Basic Availability, Soft-state, Eventual consistency)
+1. _Basic Availability:_  O banco de dados está disponível na maior parte do tempo.
+2. _Soft-state:_ O estado dos dados pode mudar sem uma gravação explícita.
+3. _Eventual consistency:_ Os dados serão consistentes em algum momento, mesmo que não imediatamente.
+
+_ Quando é utilizado? _
+Os noSQL são usados geralmente quando se o sistema possui um grande volume de dados, mas necessita de velocidade de busca e resposta. Quanto maior a quantidade de dados em uma banco relaciona padrão, maior é o tempo de resposta, por isso empresas em grande porte frequentemente adotam essa abordagem.
+
+| Banco de Dados Relacional (MySQL)   | Banco de Dados NoSQL (MongoDB)  | Descrição  |
+| ------------- | ------------- | ------------- | 
+| Tabela | Coleção | Conjunto de registros/dados. Em NoSQL, uma coleção armazena documentos JSON/BSON. | 
+| Linha | Documento | Um único registro dentro de uma tabela/coleção. Em MongoDB, cada documento pode ter uma estrutura diferente. | 
+| Coluna | Campo | Representa um atributo/valor de um registro. Em MongoDB, os campos podem variar de documento para documento. |
+| Chave Primária | _id | Identificador único de um registro/documento. Em MongoDB, o campo _id é gerado automaticamente. | 
+| Banco de Dados | Banco de Dados | Agrupamento de tabelas em SQL e de coleções em MongoDB. | 
+
+
+
 
 
 
