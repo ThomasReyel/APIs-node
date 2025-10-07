@@ -218,7 +218,97 @@ Os noSQL são usados geralmente quando se o sistema possui um grande volume de d
 | Chave Primária | _id | Identificador único de um registro/documento. Em MongoDB, o campo _id é gerado automaticamente. | 
 | Banco de Dados | Banco de Dados | Agrupamento de tabelas em SQL e de coleções em MongoDB. | 
 
+```
+const mongoose = require("mongoose");
 
+// Função assíncrona para conectar ao MongoDB
+const conectarMongoDB = async () => {
+      try {
+        await mongoose.connect("mongodb://localhost:27017/exemplo_db");
+        console.log("Conectado ao MongoDB com sucesso!");
+      } catch (err) {
+        console.error("Erro ao conectar ao MongoDB:", err);
+        process.exit(1); // Encerra o processo em caso de falha
+      }
+};
+    
+// Inicia a conexão
+conectarMongoDB();
+```
+Exemplo de conexão de MongoDB com mongoose
+
+```
+const Usuario = require("../models/Usuario");
+
+// Criar um novo usuário
+exports.criarUsuario = async (req, res) => {
+      try {
+        const usuario = new Usuario(req.body);
+        await usuario.save();
+        res.status(201).json(usuario);
+      } catch (error) {
+        res.status(400).json({ message: "Erro ao criar usuário", error });
+      }
+};
+
+// Obter todos os usuários
+exports.obterUsuarios = async (req, res) => {
+      try {
+        const usuarios = await Usuario.find();
+        res.status(200).json(usuarios);
+      } catch (error) {
+        res.status(500).json({ message: "Erro ao buscar usuários", error });
+      }
+};
+
+// Atualizar um usuário
+exports.atualizarUsuario = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const usuarioAtualizado = await Usuario.findByIdAndUpdate(id, req.body, {
+          new: true,
+        });
+        if (!usuarioAtualizado) {
+          return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+        res.status(200).json(usuarioAtualizado);
+      } catch (error) {
+        res.status(400).json({ message: "Erro ao atualizar usuário", error });
+      }
+};
+    
+// Deletar um usuário
+exports.deletarUsuario = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const usuarioDeletado = await Usuario.findByIdAndDelete(id);
+        if (!usuarioDeletado) {
+          return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+        res.status(200).json({ message: "Usuário deletado com sucesso" });
+      } catch (error) {
+        res.status(500).json({ message: "Erro ao deletar usuário", error });
+      }
+};
+    
+```
+Exemplo de Operações de CRUD
+
+## APIs
+
+### Autoriazação e Autenticação
+
+- __Autenticação:__ Processo de verificar a identidade de um usuário para confirmar se a requisição não é fraudada. Existe 4 tipos:
+ 1. Autenticação simples: É o tipo de verificação que exigi apenas um fator de verificação. Por exemplo: email e senha
+ 2. Autenticação Multifatorial (MFA): chamado comumente de autenticação de 2 fatores, como o nome já diz, utiliza 2 fatores independentes para realizar a verificação. Por 		exemplo: senha + código SMS ou senha + impressão digital.
+ 3. Autenticação com OAuth: É o protocolo que permite aos usuários se autenticarem em uma API apartir de uma API terceira com uma conta já existente. Por exemplo: Google.
+ 4. Autenticação baseada em Token: é um método de autenticação em que o servidor gera um token de acesso para um cliente autenticado. Esse token é então usado para autorizar 	acessos subsequentes.
+
+- __Autorização:__ Processo que define se um usuário autenticado possui permissão para acessar determinados recursos ou realizar ações específicas. Existe 4 tipos:
+ 1. Autorização Baseada em Papéis (RBAC - Role-Based Access Control): A API é configurada para verificar o papel do usuário e a partir disso negar ou conceder a autorização.   Os papéis podem incluir administrador, usuário padrão, editor, entre outros.
+ 2. Autorização Baseada em Atributos (ABAC - Attribute-Based Access Control): As autorizações são concedidas com base em atributos do usuário. Por exemplo: epartamento e       status.
+ 3. Controle de Acesso Baseado em Regra: As permissões são definidas a partir de regras (não necessáriamante que seja relacionado com o usuário). Por exemplo: Horário ou IP.
+ 4. Autorização Baseada em Contexto: As decisões de autorização são baseadas no contexto da requisição, como localização geográfica, dispositivo ou horário.
 
 
 
